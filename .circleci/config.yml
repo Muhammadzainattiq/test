@@ -23,7 +23,7 @@ jobs:
       - run:
           name: Test Docker image
           command: |
-            docker run --rm testing-image uvicorn --version
+            docker run --rm testing-image sh -c 'which uvicorn && uvicorn --version'
 
   deploy:
     docker:
