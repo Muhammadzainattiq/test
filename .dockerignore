@@ -1,0 +1,20 @@
+# Exclude local virtual environment
+.venv/
+venv/
+
+# Exclude Git-related files
+.git/
+.gitignore
+
+# Exclude Python cache files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Exclude local configs and temporary files
+.env
+*.log
+dist/
+build/
+*.egg-info/
