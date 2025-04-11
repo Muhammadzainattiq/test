@@ -1,0 +1,51 @@
+version: 2.1
+
+jobs:
+  build-and-test:
+    docker:
+      - image: cimg/python:3.12
+    steps:
+      - checkout
+      - setup_remote_docker:
+          version: 20.10.14
+      - run:
+          name: Install uv
+          command: |
+            curl -LsSf https://astral.sh/uv/install.sh | sh
+            echo 'export PATH="$HOME/.cargo/bin:$PATH"' >> $BASH_ENV
+      - run:
+          name: Install dependencies
+          command: |
+            uv sync
+      - run:
+          name: Build Docker image
+          command: |
+            docker build -t testing-image .
+      - run:
+          name: Test Docker image
+          command: |
+            docker run --rm testing-image uvicorn --version
+
+  deploy:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - checkout
+      - run:
+          name: Push to Hugging Face Space
+          command: |
+            git config --global user.email "ci@circleci.com"
+            git config --global user.name "CircleCI"
+            git remote add hf https://$HF_USERNAME:$HF_PERSONAL_TOKEN@huggingface.co/spaces/$HF_USERNAME/$SPACE_NAME
+            git push hf main --force
+
+workflows:
+  build-and-deploy:
+    jobs:
+      - build-and-test
+      - deploy:
+          requires:
+            - build-and-test
+          filters:
+            branches:
+              only: main
