@@ -51,6 +51,7 @@ No need to add any package, I have already added packages using uv package manag
 
 uv add huggingface-hub pydantic[email] python-multipart
 -----------------------------------
+# New Heading
 Now we have to update our code:
 as for now we are fetching the docs from GitHub and just saving it on our local and also saving all the files with some context in our PostgreSQL db in the background. but now in addition to them we also have to save them to our Qdrant database which is set and whose api key can get from the config and its integration guide is given here:
 ---
@@ -126,7 +127,7 @@ as for now we are fetching the docs from GitHub and just saving it on our local 
 ---
 Keep in mind that we will use the same embedding model as already configured which is by huggingface so don't modify it and remove the logic for openai embedding model, we no more gonna use it.
 And a previously implemented vector db manager class is present here:
----
+# New Heading
 you can get inspiration from it and modify it to work well with Qdrant and remove the extra logic present it it which was may be written for some other project (haha). 
 
 For The data ingestion pipeline, I have created a plan for best retrieval afterwards. As these are programming docs and by default the writers have well divided them into files w.r.t the concepts these are discussing so its easy for us to chunk them and embed them and save them in Qdrant cloud instance. We will do the chunking like this:
